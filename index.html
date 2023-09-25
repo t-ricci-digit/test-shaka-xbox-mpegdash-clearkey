@@ -4,7 +4,8 @@
     <!-- Shaka Player compiled library: -->
     <script src="https://ajax.googleapis.com/ajax/libs/shaka-player/4.4.1/shaka-player.compiled.js"></script>
     <style>
-      html, body {
+      html,
+      body {
         height: 100%;
         width: 100%;
         margin: 0;
@@ -15,7 +16,7 @@
   </head>
   <body>
     <script>
-      const manifestUri =
+      var manifestUri =
         "https://media.axprod.net/TestVectors/v7-MultiDRM-SingleKey/Manifest_1080p_ClearKey.mpd";
 
       function initApp() {
@@ -32,10 +33,10 @@
         }
       }
 
-      async function initPlayer() {
+      function initPlayer() {
         // Create a Player instance.
-        const video = document.getElementById("video");
-        const player = new shaka.Player(video);
+        var video = document.getElementById("video");
+        var player = new shaka.Player(video);
 
         player.configure({
           drm: {
@@ -54,14 +55,16 @@
 
         // Try to load a manifest.
         // This is an asynchronous process.
-        try {
-          await player.load(manifestUri);
-          // This runs if the asynchronous load is successful.
-          console.log("The video has now been loaded!");
-        } catch (e) {
-          // onError is executed if the asynchronous load fails.
-          onError(e);
-        }
+        player
+          .load(manifestUri)
+          .then(function () {
+            // This runs if the asynchronous load is successful.
+            console.log("The video has now been loaded!");
+          })
+          .catch(function () {
+            // onError is executed if the asynchronous load fails.
+            onError(e);
+          });
       }
 
       function onErrorEvent(event) {
